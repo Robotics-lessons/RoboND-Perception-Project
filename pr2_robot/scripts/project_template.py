@@ -315,7 +315,7 @@ def pr2_mover(object_list):
        print("output file name = %s" % yaml_filename)
        send_to_yaml(yaml_filename, dict_list)
        max_success_count = success_count
-    print("Success picking up obect total = %d" % success_count)
+    print("Success picking up object number = %d" % success_count)
     return
 
 
