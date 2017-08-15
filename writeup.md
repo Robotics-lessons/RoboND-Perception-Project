@@ -250,7 +250,7 @@ clf = svm.SVC(kernel='rbf', C=100)
 ### modified pick_place_project.launch file in RoboND-Perception-Project/pr2_robot/launch folder, add these lines
 
     <!--Add a new arg for test_scene_number-->
-    <!--AUsage: test_scene_number:=1 or 2 or 3-->
+    <!--Usage: test_scene_number:=1 or 2 or 3-->
     <arg name="test_scene_num"/>
 
     <!--Change the world name to load different tabletop setup depending on new arg-->
