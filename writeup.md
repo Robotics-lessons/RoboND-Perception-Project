@@ -10,6 +10,8 @@
 ### 3. - Running environment:
 ### 4. - Test results:
 
+---
+
 ## 1. Required steps to complete this project:
 1. Extract features and train an SVM model on new objects (see `pick_list_*.yaml` in `/pr2_robot/config/` for the list of models you'll be trying to identify). 
 2. Write a ROS node and subscribe to `/pr2/world/points` topic. This topic contains noisy point cloud data that you must work with.
@@ -20,11 +22,118 @@
 7. Create ROS messages containing the details of each object (name, pick_pose, etc.) and write these messages out to `.yaml` files, one for each of the 3 scenarios (`test1-3.world` in `/pr2_robot/worlds/`).  See the example `output.yaml` for details on what the output should look like.  
 8. Submit a link to your GitHub repo for the project or the Python code for your perception pipeline and your output `.yaml` files (3 `.yaml` files, one for each test world).  You must have correctly identified 100% of objects from `pick_list_1.yaml` for `test1.world`, 80% of items from `pick_list_2.yaml` for `test2.world` and 75% of items from `pick_list_3.yaml` in `test3.world`.
 
-## 2. - Code detail:
+---
 
-## 3. - Running environment:
+## 2. Code detail:
+### The add new codes in project_template.py
 
-## 4. - Test results:
+#### The codes implemented in Exercise-2
+```
+    # Convert ROS msg to PCL data
+    cloud = ros_to_pcl(pcl_msg)
+    
+    # Apply Statistical Outlier Filtering
+    outlier_filter = cloud.make_statistical_outlier_filter()
+
+    # Set the number of neighboring points to analyze for any given point
+    outlier_filter.set_mean_k(50)
+
+    # Set threshold scale factor
+    x = 1.0   # need to test different values
+
+    # Any point with a mean distance larger than global (mean distance+x*std_dev) will be considered outlier
+    outlier_filter.set_std_dev_mul_thresh(x)
+
+    # Finally call the filter function for magic
+    cloud_filtered = outlier_filter.filter()
+
+    # Apply Voxel Grid Downsampling
+    vox = cloud_filtered.make_voxel_grid_filter()
+    LEAF_SIZE = 0.01
+    vox.set_leaf_size(LEAF_SIZE, LEAF_SIZE, LEAF_SIZE)
+    cloud_filtered = vox.filter()
+
+    # Apply PassThrough Filter
+    passthrough = cloud_filtered.make_passthrough_filter()
+    filter_axis = 'z'
+    passthrough.set_filter_field_name (filter_axis)
+    axis_min = 0.6
+    axis_max = 1.1
+    passthrough.set_filter_limits (axis_min, axis_max)
+    cloud_filtered = passthrough.filter()
+
+    passthrough = cloud_filtered.make_passthrough_filter()
+    filter_axis = 'y'
+    passthrough.set_filter_field_name (filter_axis)
+    axis_min = -0.4
+    axis_max = 0.4
+    passthrough.set_filter_limits (axis_min, axis_max)
+    cloud_filtered = passthrough.filter()
+
+    # Apply RANSAC Plane Segmentation
+    seg = cloud_filtered.make_segmenter()
+    seg.set_model_type(pcl.SACMODEL_PLANE)
+    seg.set_method_type(pcl.SAC_RANSAC)
+    max_distance = 0.01
+    seg.set_distance_threshold(max_distance)
+    inliers, coefficients = seg.segment()
+
+    # Extract inliers and outliers
+    cloud_table = cloud_filtered.extract(inliers, negative=False)   # table
+    cloud_objects = cloud_filtered.extract(inliers, negative=True)   # object
+
+    # Apply Euclidean Clustering
+    white_cloud = XYZRGB_to_XYZ(cloud_objects)
+    tree = white_cloud.make_kdtree()
+    # Create a cluster extraction object
+    ec = white_cloud.make_EuclideanClusterExtraction()
+    # Set tolerances for distance threshold 
+    # as well as minimum and maximum cluster size (in points)
+    # NOTE: These are poor choices of clustering parameters
+    # Your task is to experiment and find values that work for segmenting objects.
+    ec.set_ClusterTolerance(0.02)
+    ec.set_MinClusterSize(80)
+    ec.set_MaxClusterSize(1600)
+    # Search the k-d tree for clusters
+    ec.set_SearchMethod(tree)
+    # Extract indices for each of the discovered clusters
+    cluster_indices = ec.Extract()
+
+    # Create Cluster-Mask Point Cloud to visualize each cluster separately
+    #Assign a color corresponding to each segmented object in scene
+    cluster_color = get_color_list(len(cluster_indices))
+
+    color_cluster_point_list = []
+
+    for j, indices in enumerate(cluster_indices):
+        for i, indice in enumerate(indices):
+            color_cluster_point_list.append([white_cloud[indice][0],
+                                        white_cloud[indice][1],
+                                        white_cloud[indice][2],
+                                         rgb_to_float(cluster_color[j])])
+
+    # Create new cloud containing all clusters, each with unique color
+    cluster_cloud = pcl.PointCloud_PointXYZRGB()
+    cluster_cloud.from_list(color_cluster_point_list)
+
+    # Convert PCL data to ROS messages
+    ros_cloud_objects =  pcl_to_ros(cloud_objects)
+    ros_cloud_table = pcl_to_ros(cloud_table)
+    ros_cluster_cloud = pcl_to_ros(cluster_cloud)
+
+    # Publish ROS messages
+    pcl_objects_pub.publish(ros_cloud_objects)
+    pcl_table_pub.publish(ros_cloud_table)
+    pcl_cluster_pub.publish(ros_cluster_cloud)
+
+```
+---
+
+## 3. Running environment:
+
+---
+
+## 4. Test results:
 
 # Extra Challenges: Complete the Pick & Place
 7. To create a collision map, publish a point cloud to the `/pr2/3d_map/points` topic and make sure you change the `point_cloud_topic` to `/pr2/3d_map/points` in `sensors.yaml` in the `/pr2_robot/config/` directory. This topic is read by Moveit!, which uses this point cloud input to generate a collision map, allowing the robot to plan its trajectory.  Keep in mind that later when you go to pick up an object, you must first remove it from this point cloud so it is removed from the collision map!
