@@ -127,6 +127,7 @@
     pcl_cluster_pub.publish(ros_cluster_cloud)
 
 ```
+
 #### The codes are implemented in Exercise-3, and copied to project_template.py in RoboND-Perception-Project/pr2_robot/scripts folder
 ```
     # Classify the clusters! (loop through each detected cluster one at a time)
@@ -177,6 +178,7 @@
     # Create a detected objects list that will be passed in pr2_mover(detected_objects_list) function
     detected_objects_list = dict(zip(labels, centroids))
 ```
+
 ### add compute_color_histograms() and compute_normal_histograms() functions in features.py in /sensor_stick/src/sensor_stick folder
 ```
 def compute_color_histograms(cloud, using_hsv=False, nbins=32, bins_range=(0, 256)):
@@ -241,12 +243,27 @@ def compute_normal_histograms(normal_cloud, nbins=32, bins_range=(0, 256)):
 
     return normed_features
 ```
+
 ### modified SVM parameters in train_svm.py in /sensor_stick/scripts folder
 ```
 # Create classifier
 # Use rbf kernel and set C parameter as 100
 clf = svm.SVC(kernel='rbf', C=100)
 ```
+
+### modified capture_features.py file in sensor_stick/scripts folder
+```
+   models = [\
+       'biscuits',
+       'book',
+       'snacks',
+       'eraser',
+       'glue',
+       'sticky_notes',
+       'soap',
+       'soap2']
+```
+
 ### modified pick_place_project.launch file in RoboND-Perception-Project/pr2_robot/launch folder, add these lines
 
     <!--Add a new arg for test_scene_number-->
@@ -263,7 +280,17 @@ clf = svm.SVC(kernel='rbf', C=100)
 ---
 
 ## 3. Running environment:
+### Training process
+Open a new ROS terminal and run this command to start Gazebo and RViz windows
+```
+   roslaunch sensor_stick training.launch
+```
 
+Open another new ROS terminal and run this command to capture object features
+```
+   rosrun sensor_stick capture_features.py under RoboND-Perception-Project/pr2_robot/training folder
+```
+Adjuest 
 ---
 
 ## 4. Test results:
