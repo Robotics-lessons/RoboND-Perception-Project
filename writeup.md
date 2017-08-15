@@ -27,7 +27,7 @@
 ## 2. Code detail:
 ### The add new codes in project_template.py
 
-#### The codes implemented in Exercise-2
+#### The codes are implemented in Exercise-2, and copied to project_template.py
 ```
     # Convert ROS msg to PCL data
     cloud = ros_to_pcl(pcl_msg)
@@ -127,6 +127,57 @@
     pcl_cluster_pub.publish(ros_cluster_cloud)
 
 ```
+#### The codes are implemented in Exercise-3, and copied to project_template.py
+```
+    # Classify the clusters! (loop through each detected cluster one at a time)
+    for index, pts_list in enumerate(cluster_indices):
+
+        # Grab the points for the cluster
+        pcl_cluster = cloud_objects.extract(pts_list)
+
+        # Convert the cluster from pcl to ROS using helper function
+        ros_cluster = pcl_to_ros(pcl_cluster)
+
+        # Compute the associated feature vector
+        # Extract histogram features
+        # Complete this step just as is covered in capture_features.py
+        chists = compute_color_histograms(ros_cluster, using_hsv=True)
+        normals = get_normals(ros_cluster)
+        nhists = compute_normal_histograms(normals)
+        feature = np.concatenate((chists, nhists))
+
+        # Make the prediction
+        # and add it to detected_objects_labels list
+        prediction = clf.predict(scaler.transform(feature.reshape(1,-1)))
+        label = encoder.inverse_transform(prediction)[0]
+        detected_objects_labels.append(label)
+        #print("label = %s" % label)
+
+        # Publish a label into RViz
+        label_pos = list(white_cloud[pts_list[0]])
+        label_pos[2] += .4
+        #print("label position = %s", label_pos)
+        object_markers_pub.publish(make_label(label,label_pos, index))
+
+        # Add the detected object to the list of detected objects.
+        do = DetectedObject()
+        do.label = label
+        do.cloud = ros_cluster
+        detected_objects.append(do)
+
+    rospy.loginfo('Detected {} objects: {}'.format(len(detected_objects_labels), detected_objects_labels))
+
+    # Publish the list of detected objects
+
+    for obj in detected_objects:
+        labels.append(obj.label)
+        points_arr = ros_to_pcl(obj.cloud).to_array()
+        centroids.append(np.mean(points_arr, axis=0)[:3])
+
+    # Create a detected objects list that will be passed in pr2_mover(detected_objects_list) function
+    detected_objects_list = dict(zip(labels, centroids))
+```
+
 ---
 
 ## 3. Running environment:
