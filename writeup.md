@@ -27,7 +27,7 @@
 ## 2. Code detail:
 ### The add new codes in project_template.py
 
-#### The codes are implemented in Exercise-2, and copied to project_template.py
+#### The codes are implemented in Exercise-1 and 2, and copied to project_template.py in RoboND-Perception-Project/pr2_robot/scripts folder
 ```
     # Convert ROS msg to PCL data
     cloud = ros_to_pcl(pcl_msg)
@@ -127,7 +127,7 @@
     pcl_cluster_pub.publish(ros_cluster_cloud)
 
 ```
-#### The codes are implemented in Exercise-3, and copied to project_template.py
+#### The codes are implemented in Exercise-3, and copied to project_template.py in RoboND-Perception-Project/pr2_robot/scripts folder
 ```
     # Classify the clusters! (loop through each detected cluster one at a time)
     for index, pts_list in enumerate(cluster_indices):
@@ -177,7 +177,89 @@
     # Create a detected objects list that will be passed in pr2_mover(detected_objects_list) function
     detected_objects_list = dict(zip(labels, centroids))
 ```
+### add compute_color_histograms() and compute_normal_histograms() functions in features.py in /sensor_stick/src/sensor_stick folder
+```
+def compute_color_histograms(cloud, using_hsv=False, nbins=32, bins_range=(0, 256)):
 
+    # Compute histograms for the clusters
+    point_colors_list = []
+
+    # Step through each point in the point cloud
+    for point in pc2.read_points(cloud, skip_nans=True):
+        rgb_list = float_to_rgb(point[3])
+        if using_hsv:
+            point_colors_list.append(rgb_to_hsv(rgb_list) * 255)
+        else:
+            point_colors_list.append(rgb_list)
+
+    # Populate lists with color values
+    channel_1_vals = []
+    channel_2_vals = []
+    channel_3_vals = []
+
+    for color in point_colors_list:
+        channel_1_vals.append(color[0])
+        channel_2_vals.append(color[1])
+        channel_3_vals.append(color[2])
+    
+    # Compute histograms
+    h_hist = np.histogram(channel_1_vals, bins=nbins, range=bins_range)
+    s_hist = np.histogram(channel_2_vals, bins=nbins, range=bins_range)
+    v_hist = np.histogram(channel_3_vals, bins=nbins, range=bins_range)
+
+    # Concatenate and normalize the histograms
+    hist_features = np.concatenate((h_hist[0], s_hist[0], v_hist[0])) * 1.0
+    normed_features = hist_features / np.sum(hist_features)
+
+    return normed_features 
+
+
+def compute_normal_histograms(normal_cloud, nbins=32, bins_range=(0, 256)):
+    norm_x_vals = []
+    norm_y_vals = []
+    norm_z_vals = []
+
+    for norm_component in pc2.read_points(normal_cloud,
+                                          field_names = ('normal_x', 'normal_y', 'normal_z'),
+                                          skip_nans=True):
+        norm_x_vals.append(norm_component[0])
+        norm_y_vals.append(norm_component[1])
+        norm_z_vals.append(norm_component[2])
+
+    # Compute histograms of normal values (just like with color)
+    h_hist = np.histogram(norm_x_vals, bins=nbins, range=bins_range)
+    s_hist = np.histogram(norm_y_vals, bins=nbins, range=bins_range)
+    v_hist = np.histogram(norm_z_vals, bins=nbins, range=bins_range)
+
+    # Concatenate and normalize the histograms
+    hist_features = np.concatenate((h_hist[0], s_hist[0], v_hist[0])) * 1.0
+    normed_features = hist_features / np.sum(hist_features)
+
+    # Generate random features for demo mode.  
+    # Replace normed_features with your feature vector
+    #normed_features = np.random.random(96)
+
+    return normed_features
+```
+### modified SVM parameters in train_svm.py in /sensor_stick/scripts folder
+```
+# Create classifier
+# Use rbf kernel and set C parameter as 100
+clf = svm.SVC(kernel='rbf', C=100)
+```
+### modified pick_place_project.launch file in RoboND-Perception-Project/pr2_robot/launch folder, add these lines
+'''
+  <!--Add a new arg for test_scene_number-->
+  <!--AUsage: test_scene_number:=1 or 2 or 3-->
+  <arg name="test_scene_num"/>
+
+  <!--Change the world name to load different tabletop setup depending on new arg-->
+  <arg name="world_name" value="$(find pr2_robot)/worlds/test$(arg test_scene_num).world"/>
+
+  <!--Change the list name based on the scene you have loaded-->
+  <param name="test_scene_num" type="int" value="$(arg test_scene_num)"/>
+  <rosparam command="load" file="$(find pr2_robot)/config/pick_list_$(arg test_scene_num).yaml"/>
+'''
 ---
 
 ## 3. Running environment:
