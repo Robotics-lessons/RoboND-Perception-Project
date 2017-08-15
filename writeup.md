@@ -1,9 +1,16 @@
-## Project: Perception Pick & Place
+[![Udacity - Robotics NanoDegree Program](https://s3-us-west-1.amazonaws.com/udacity-robotics/Extra+Images/RoboND_flag.png)](https://www.udacity.com/robotics)
+# Project: Perception Pick & Place
 
 ---
 
+## Index
 
-# Complete these steps for this project:
+### 1. - Required steps to complete this project:
+### 2. - Code detail:
+### 3. - Running environment:
+### 4. - Test results:
+
+## 1. Required steps to complete this project:
 1. Extract features and train an SVM model on new objects (see `pick_list_*.yaml` in `/pr2_robot/config/` for the list of models you'll be trying to identify). 
 2. Write a ROS node and subscribe to `/pr2/world/points` topic. This topic contains noisy point cloud data that you must work with.
 3. Use filtering and RANSAC plane fitting to isolate the objects of interest from the rest of the scene.
@@ -12,6 +19,12 @@
 6. Calculate the centroid (average in x, y and z) of the set of points belonging to that each object.
 7. Create ROS messages containing the details of each object (name, pick_pose, etc.) and write these messages out to `.yaml` files, one for each of the 3 scenarios (`test1-3.world` in `/pr2_robot/worlds/`).  See the example `output.yaml` for details on what the output should look like.  
 8. Submit a link to your GitHub repo for the project or the Python code for your perception pipeline and your output `.yaml` files (3 `.yaml` files, one for each test world).  You must have correctly identified 100% of objects from `pick_list_1.yaml` for `test1.world`, 80% of items from `pick_list_2.yaml` for `test2.world` and 75% of items from `pick_list_3.yaml` in `test3.world`.
+
+## 2. - Code detail:
+
+## 3. - Running environment:
+
+## 4. - Test results:
 
 # Extra Challenges: Complete the Pick & Place
 7. To create a collision map, publish a point cloud to the `/pr2/3d_map/points` topic and make sure you change the `point_cloud_topic` to `/pr2/3d_map/points` in `sensors.yaml` in the `/pr2_robot/config/` directory. This topic is read by Moveit!, which uses this point cloud input to generate a collision map, allowing the robot to plan its trajectory.  Keep in mind that later when you go to pick up an object, you must first remove it from this point cloud so it is removed from the collision map!
