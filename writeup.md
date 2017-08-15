@@ -248,18 +248,18 @@ def compute_normal_histograms(normal_cloud, nbins=32, bins_range=(0, 256)):
 clf = svm.SVC(kernel='rbf', C=100)
 ```
 ### modified pick_place_project.launch file in RoboND-Perception-Project/pr2_robot/launch folder, add these lines
-'''
-  <!--Add a new arg for test_scene_number-->
-  <!--AUsage: test_scene_number:=1 or 2 or 3-->
-  <arg name="test_scene_num"/>
 
-  <!--Change the world name to load different tabletop setup depending on new arg-->
-  <arg name="world_name" value="$(find pr2_robot)/worlds/test$(arg test_scene_num).world"/>
+    <!--Add a new arg for test_scene_number-->
+    <!--AUsage: test_scene_number:=1 or 2 or 3-->
+    <arg name="test_scene_num"/>
 
-  <!--Change the list name based on the scene you have loaded-->
-  <param name="test_scene_num" type="int" value="$(arg test_scene_num)"/>
-  <rosparam command="load" file="$(find pr2_robot)/config/pick_list_$(arg test_scene_num).yaml"/>
-'''
+    <!--Change the world name to load different tabletop setup depending on new arg-->
+    <arg name="world_name" value="$(find pr2_robot)/worlds/test$(arg test_scene_num).world"/>
+
+    <!--Change the list name based on the scene you have loaded-->
+    <param name="test_scene_num" type="int" value="$(arg test_scene_num)"/>
+    <rosparam command="load" file="$(find pr2_robot)/config/pick_list_$(arg test_scene_num).yaml"/>
+
 ---
 
 ## 3. Running environment:
