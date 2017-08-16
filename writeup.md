@@ -290,7 +290,7 @@ Open another new ROS terminal and run this command to capture object features
 ```
    rosrun sensor_stick capture_features.py under RoboND-Perception-Project/pr2_robot/training folder
 ```
-Adjust the number of test data for each object in capture_features.py to get a higher accuracy number.
+Adjust the number of test data for each object (50) in capture_features.py to get a higher accuracy number.
 
 Run SVM model cdoe 
 Result is:
@@ -304,7 +304,87 @@ Result is:
 
 ![SVM result](./images/svm_result.png)
 
+### Run three test cases 
+#### Test case 1:  
+Run command:
+```
+
+```
 ![Test 1 objects](./images/test_1_objects.PNG)
+#### Result: 3 objects was picked up in 3 objects
+#### Output data in yaml file: output_1.yaml under Udacity-RoboND-Perception-Project/pr2_robot/output/
+object_list:
+- arm_name: right
+  object_name: biscuits
+  pick_pose:
+    orientation:
+      w: 0.0
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    position:
+      x: 0.542164146900177
+      y: -0.24244220554828644
+      z: 0.7056819200515747
+  place_pose:
+    orientation:
+      w: 0.0
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    position:
+      x: 0
+      y: -0.71
+      z: 0.605
+  test_scene_num: 1
+- arm_name: right
+  object_name: soap
+  pick_pose:
+    orientation:
+      w: 0.0
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    position:
+      x: 0.5434764623641968
+      y: -0.01946290209889412
+      z: 0.6749463677406311
+  place_pose:
+    orientation:
+      w: 0.0
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    position:
+      x: 0
+      y: -0.71
+      z: 0.605
+  test_scene_num: 1
+- arm_name: left
+  object_name: soap2
+  pick_pose:
+    orientation:
+      w: 0.0
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    position:
+      x: 0.44685181975364685
+      y: 0.21615397930145264
+      z: 0.6745059490203857
+  place_pose:
+    orientation:
+      w: 0.0
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    position:
+      x: 0
+      y: 0.71
+      z: 0.605
+  test_scene_num: 1
+
+
 
 ![Test 2 objects](./images/test_2_objects.PNG)
 
