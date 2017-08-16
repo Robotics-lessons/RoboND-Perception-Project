@@ -68,10 +68,10 @@ def pcl_callback(pcl_msg):
     outlier_filter = cloud.make_statistical_outlier_filter()
 
     # Set the number of neighboring points to analyze for any given point
-    outlier_filter.set_mean_k(50)
+    outlier_filter.set_mean_k(16)
 
     # Set threshold scale factor
-    x = 1.0
+    x = 0.01   # need to test different values
 
     # Any point with a mean distance larger than global (mean distance+x*std_dev) will be considered outlier
     outlier_filter.set_std_dev_mul_thresh(x)
@@ -81,7 +81,7 @@ def pcl_callback(pcl_msg):
 
     # TODO: Voxel Grid Downsampling
     vox = cloud_filtered.make_voxel_grid_filter()
-    LEAF_SIZE = 0.01
+    LEAF_SIZE = 0.006
     vox.set_leaf_size(LEAF_SIZE, LEAF_SIZE, LEAF_SIZE)
     cloud_filtered = vox.filter()
 
@@ -123,9 +123,9 @@ def pcl_callback(pcl_msg):
     # as well as minimum and maximum cluster size (in points)
     # NOTE: These are poor choices of clustering parameters
     # Your task is to experiment and find values that work for segmenting objects.
-    ec.set_ClusterTolerance(0.015)
-    ec.set_MinClusterSize(20)
-    ec.set_MaxClusterSize(1400)
+    ec.set_ClusterTolerance(0.05)
+    ec.set_MinClusterSize(100)
+    ec.set_MaxClusterSize(1600)
     # Search the k-d tree for clusters
     ec.set_SearchMethod(tree)
     # Extract indices for each of the discovered clusters
@@ -245,9 +245,10 @@ def pr2_mover(object_list):
 
     # TODO: Get/Read parameters
     object_list_param = rospy.get_param('/object_list')
-    # scene number from launch file
+    # Get scene number from launch file
     test_scene_num.data = rospy.get_param('/test_scene_num')
-    print("test_scene_num = %d"% test_scene_num.data)
+    # print("test_scene_num = %d"% test_scene_num.data)
+    # Get dropbox parameters
     dropbox_param = rospy.get_param('/dropbox')
 
     # TODO: Parse parameters into individual variables
