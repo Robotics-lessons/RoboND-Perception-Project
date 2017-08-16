@@ -307,12 +307,10 @@ Result is:
 ## 4. Test results:
 ### Run three test cases 
 #### Test case 1:  
-Run command:
+Run two commands:
 ```
     roslaunch pr2_robot pick_place_project.launch test_scene_num:=1
-```
-And
-```     
+  
     rosrun pr2_robot project_template.py under RoboND-Perception-Project/pr2_robot folder in another terminal
 ```
 ![Test 1 objects](./images/test_1_objects.PNG)
@@ -391,8 +389,111 @@ object_list:
   test_scene_num: 1
 ```
 
-
+#### Test case 2:  
+Run two commands:
+```
+    roslaunch pr2_robot pick_place_project.launch test_scene_num:=2
+  
+    rosrun pr2_robot project_template.py under RoboND-Perception-Project/pr2_robot folder in another terminal
+```
 ![Test 2 objects](./images/test_2_objects.PNG)
+#### Result: 4 objects was picked up in 5 objects
+#### Output data in yaml file: output_2.yaml under Udacity-RoboND-Perception-Project/pr2_robot/output/
+```
+object_list:
+- arm_name: right
+  object_name: biscuits
+  pick_pose:
+    orientation:
+      w: 0.0
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    position:
+      x: 0.5716290473937988
+      y: -0.24809011816978455
+      z: 0.7048883438110352
+  place_pose:
+    orientation:
+      w: 0.0
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    position:
+      x: 0
+      y: -0.71
+      z: 0.605
+  test_scene_num: 2
+- arm_name: right
+  object_name: soap
+  pick_pose:
+    orientation:
+      w: 0.0
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    position:
+      x: 0.5612798929214478
+      y: 0.0029581175185739994
+      z: 0.67566978931427
+  place_pose:
+    orientation:
+      w: 0.0
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    position:
+      x: 0
+      y: -0.71
+      z: 0.605
+  test_scene_num: 2
+- arm_name: left
+  object_name: soap2
+  pick_pose:
+    orientation:
+      w: 0.0
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    position:
+      x: 0.4449383616447449
+      y: 0.22701767086982727
+      z: 0.6768869161605835
+  place_pose:
+    orientation:
+      w: 0.0
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    position:
+      x: 0
+      y: 0.71
+      z: 0.605
+  test_scene_num: 2
+- arm_name: left
+  object_name: glue
+  pick_pose:
+    orientation:
+      w: 0.0
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    position:
+      x: 0.6314414739608765
+      y: 0.13117220997810364
+      z: 0.6792183518409729
+  place_pose:
+    orientation:
+      w: 0.0
+      x: 0.0
+      y: 0.0
+      z: 0.0
+    position:
+      x: 0
+      y: 0.71
+      z: 0.605
+  test_scene_num: 2
+```
 
 ![Test 3 objects](./images/test_3_objects.PNG)
 ---
