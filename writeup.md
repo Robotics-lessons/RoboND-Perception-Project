@@ -308,11 +308,13 @@ Result is:
 ### Run three test cases 
 #### Test case 1:  
 Run command:
-
+```
     roslaunch pr2_robot pick_place_project.launch test_scene_num:=1
+```
 And
-    rosrun pr2_robot project_template.py under /RoboND-Perception-Project/pr2_robot folder in another terminal
-
+```     
+    rosrun pr2_robot project_template.py under RoboND-Perception-Project/pr2_robot folder in another terminal
+```
 ![Test 1 objects](./images/test_1_objects.PNG)
 #### Result: 3 objects was picked up in 3 objects
 #### Output data in yaml file: output_1.yaml under Udacity-RoboND-Perception-Project/pr2_robot/output/
@@ -387,7 +389,7 @@ object_list:
       y: 0.71
       z: 0.605
   test_scene_num: 1
-'''
+```
 
 
 ![Test 2 objects](./images/test_2_objects.PNG)
