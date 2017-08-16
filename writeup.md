@@ -278,6 +278,37 @@ clf = svm.SVC(kernel='rbf', C=100)
     <param name="test_scene_num" type="int" value="$(arg test_scene_num)"/>
     <rosparam command="load" file="$(find pr2_robot)/config/pick_list_$(arg test_scene_num).yaml"/>
 
+### project file folder structure
+```
+Root path: RoboND-Perception-Project
+                  |
+                  +-- pr2_robot
+                         |
+                         |-- config   # store different config files 
+                         |
+                         |-- include # store all header files
+                         |
+                         |-- launch  # store all launch files              
+                         |
+                         |-- materials # store all graphic image feature files
+                         |
+                         |-- meshes 
+                         |
+                         |-- models # store different model files 
+                         |
+                         |-- output    # new folder to store all output yaml files 
+                         |
+                         |-- scripts # store different code files
+                         |
+                         |-- src   # store all c++ code files              
+                         |
+                         |-- srv  # store all srv files 
+                         |
+                         |-- training   # new folder to store all training sav files 
+                         |
+                         +-- world   # store all world files 
+```
+
 ---
 
 ## 3. Running environment:
@@ -308,9 +339,9 @@ Result is:
 
 ## 4. Test results:
 ### Run three test cases summary
-    100% of objects from pick_list_1.yaml for test1.world, 
-    80% of items from pick_list_2.yaml for test2.world 
-    87.5% of items from pick_list_3.yaml in test3.world.
+    100% of objects from pick_list_1.yaml for test1.world (3/3), 
+    80% of items from pick_list_2.yaml for test2.world (4/5).
+    87.5% of items from pick_list_3.yaml in test3.world (7/8).
 #### Test case 1:  
 Run two commands:
 ```
