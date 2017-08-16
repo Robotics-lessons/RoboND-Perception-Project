@@ -249,8 +249,8 @@ def compute_normal_histograms(normal_cloud, nbins=32, bins_range=(0, 256)):
 ### modified SVM parameters in train_svm.py in /sensor_stick/scripts folder
 ```
 # Create classifier
-# Use rbf kernel and set C parameter as 100
-clf = svm.SVC(kernel='rbf', C=100)
+# Use linear kernel and set C parameter as 1.0
+clf = svm.SVC(kernel='linear', C=1.0)
 ```
 
 ### modified capture_features.py file in sensor_stick/scripts folder
@@ -351,7 +351,7 @@ Run two commands:
     rosrun pr2_robot project_template.py under RoboND-Perception-Project/pr2_robot folder in another terminal
 ```
 ![Test 1 objects](./images/test_1_objects.PNG)
-#### Result: 3 objects was picked up in 3 objects
+#### Result: 3 objects are picked up in 3 objects
 #### Output data in yaml file: output_1.yaml under Udacity-RoboND-Perception-Project/pr2_robot/output/
 ```
 object_list:
@@ -434,7 +434,7 @@ Run two commands:
     rosrun pr2_robot project_template.py under RoboND-Perception-Project/pr2_robot folder in another terminal
 ```
 ![Test 2 objects](./images/test_2_objects.PNG)
-#### Result: 4 objects was picked up in 5 objects
+#### Result: 4 objects are picked up in 5 objects
 #### Output data in yaml file: output_2.yaml under Udacity-RoboND-Perception-Project/pr2_robot/output/
 ```
 object_list:
@@ -540,7 +540,7 @@ Run two commands:
     rosrun pr2_robot project_template.py under RoboND-Perception-Project/pr2_robot folder in another terminal
 ```
 ![Test 3 objects](./images/test_3_objects.PNG)
-#### Result: 7 objects was picked up in 8 objects
+#### Result: 7 objects are picked up in 8 objects
 #### Output data in yaml file: output_3.yaml under Udacity-RoboND-Perception-Project/pr2_robot/output/
 ```
 object_list:
@@ -715,7 +715,7 @@ object_list:
 
 2. K-means Clustering: Grouping objects by clustering all closer dataset points together depends on final clustering number K. Set K = 16
 
-3. VoxelGrid Downsampling Filter: Leaf Size as an each voxel size, a big Leaf Size number can reduce more data size, but lose more detail. A small Leaf Size number can reduce less data size, but more processing power. It depends on input data to find the best balance. Set Leaf Size = 0.01
+3. VoxelGrid Downsampling Filter: Leaf Size as each voxel size, a big Leaf Size number can reduce more data size, but lose more detail. A small Leaf Size number can reduce less data size, but more processing power. It depends on input data to find the best balance. Set Leaf Size = 0.01
 
 4. Passthrough Filter: It has filter_axis, axis_min, axis_max 3 parameters, I use this filter to crop z and y axis with specific region to remove none interest data.
 
@@ -724,10 +724,11 @@ object_list:
 6. Extract inliers and outliers: Use extract function to separate inliers and outliers objects.
 
 7. Euclidean Clustering: Grouping objects by clustering all closer dataset points together. Create new point clouds containing the table and objects separately. Set 
+```
     ec.set_ClusterTolerance(0.02)
     ec.set_MinClusterSize(80)
     ec.set_MaxClusterSize(1600)
-
+```
 ### SVM parameter selection
 1. svm.SVC(kernel='linear', C=1.0, gamma='auto')
 ```
@@ -751,7 +752,7 @@ Accuracy: 0.90 (+/- 0.03)
 accuracy score: 0.9
 ``` 
 Using same capture feature dataset, set parameters as kernel= rbf, C= 100.000000, gamma= auto, the accuracy is better than set parameter as kernel= linear, C= 1.000000, gamma= auto. But when using SVM model in pick and place robot project.
-The lower accuracy model got better recoganized objects result.
+The lower accuracy model got better recognized objects result.
 
 ### Improvement
 Need to spend more time to understand filter and model algorithm and parameters, and tune up to get the best results.
