@@ -304,11 +304,14 @@ Result is:
 
 ![SVM result](./images/svm_result.png)
 
+## 4. Test results:
 ### Run three test cases 
 #### Test case 1:  
 Run command:
 
     roslaunch pr2_robot pick_place_project.launch test_scene_num:=1
+And
+    rosrun pr2_robot project_template.py under /RoboND-Perception-Project/pr2_robot folder in another terminal
 
 ![Test 1 objects](./images/test_1_objects.PNG)
 #### Result: 3 objects was picked up in 3 objects
@@ -392,7 +395,6 @@ object_list:
 ![Test 3 objects](./images/test_3_objects.PNG)
 ---
 
-## 4. Test results:
 
 # Extra Challenges: Complete the Pick & Place
 7. To create a collision map, publish a point cloud to the `/pr2/3d_map/points` topic and make sure you change the `point_cloud_topic` to `/pr2/3d_map/points` in `sensors.yaml` in the `/pr2_robot/config/` directory. This topic is read by Moveit!, which uses this point cloud input to generate a collision map, allowing the robot to plan its trajectory.  Keep in mind that later when you go to pick up an object, you must first remove it from this point cloud so it is removed from the collision map!
