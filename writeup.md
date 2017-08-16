@@ -304,6 +304,12 @@ Result is:
 
 ![SVM result](./images/svm_result.png)
 
+
+![Test 1 objects] (./images/test_1_objects.PNG)
+
+![Test 2 objects] (./images/test_2_objects.PNG)
+
+![Test 3 objects] (./images/test_3_objects.PNG)
 ---
 
 ## 4. Test results:
