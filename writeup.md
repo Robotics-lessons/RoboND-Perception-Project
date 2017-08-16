@@ -292,7 +292,7 @@ Root path: RoboND-Perception-Project
                          |
                          |-- materials # store all graphic image feature files
                          |
-                         |-- meshes 
+                         |-- meshes # store different meshes files
                          |
                          |-- models # store different model files 
                          |
