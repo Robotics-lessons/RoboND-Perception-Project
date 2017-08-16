@@ -290,7 +290,20 @@ Open another new ROS terminal and run this command to capture object features
 ```
    rosrun sensor_stick capture_features.py under RoboND-Perception-Project/pr2_robot/training folder
 ```
-Adjuest 
+Adjust the number of test data for each object in capture_features.py to get a higher accuracy number.
+
+Run SVM model cdoe 
+Result is:
+----------
+Features in Training Set: 400
+Invalid Features in Training set: 4
+SVC
+Scores: [ 0.9875      0.88607595  0.91139241  0.88607595  0.91139241]
+Accuracy: 0.92 (+/- 0.07)
+accuracy score: 0.916666666667
+
+[image_0]: ./images/svm_result.png
+
 ---
 
 ## 4. Test results:
