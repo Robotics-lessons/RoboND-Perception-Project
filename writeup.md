@@ -9,6 +9,7 @@
 ### 2. - Code detail:
 ### 3. - Running environment:
 ### 4. - Test results:
+### 5. - Project discussion:
 
 ---
 
@@ -707,9 +708,53 @@ object_list:
 ```
 ---
 
+## 5. Project discussion:
 
+### Filter parameter adjust
+1. Statistical Outlier Filtering: Filtering the graphics noise
 
+2. K-means Clustering: Grouping objects by clustering all closer dataset points together depends on final clustering number K. Set K = 16
 
+3. VoxelGrid Downsampling Filter: Leaf Size as an each voxel size, a big Leaf Size number can reduce more data size, but lose more detail. A small Leaf Size number can reduce less data size, but more processing power. It depends on input data to find the best balance. Set Leaf Size = 0.01
+
+4. Passthrough Filter: It has filter_axis, axis_min, axis_max 3 parameters, I use this filter to crop z and y axis with specific region to remove none interest data.
+
+5. RANSAC: Use RANSAC algorithm to separate inliers and outliers model based on the max_distance, Set max_distance = 0.01
+
+6. Extract inliers and outliers: Use extract function to separate inliers and outliers objects.
+
+7. Euclidean Clustering: Grouping objects by clustering all closer dataset points together. Create new point clouds containing the table and objects separately. Set 
+    ec.set_ClusterTolerance(0.02)
+    ec.set_MinClusterSize(80)
+    ec.set_MaxClusterSize(1600)
+
+### SVM parameter selection
+1. svm.SVC(kernel='linear', C=1.0, gamma='auto')
+```
+Features in Training Set: 240
+Invalid Features in Training set: 0
+SVC
+kernel= linear, C= 1.000000, gamma= auto
+Scores: [ 0.89583333  0.875       0.91666667  0.83333333  0.875     ]
+Accuracy: 0.88 (+/- 0.06)
+accuracy score: 0.879166666667
+```
+
+2. svm.SVC(kernel='rbf', C=100, gamma='auto')
+```
+Features in Training Set: 240
+Invalid Features in Training set: 0
+SVC
+kernel= rbf, C= 100.000000, gamma= auto
+Scores: [ 0.89583333  0.875       0.89583333  0.91666667  0.91666667]
+Accuracy: 0.90 (+/- 0.03)
+accuracy score: 0.9
+``` 
+Using same capture feature dataset, set parameters as kernel= rbf, C= 100.000000, gamma= auto, the accuracy is better than set parameter as kernel= linear, C= 1.000000, gamma= auto. But when using SVM model in pick and place robot project.
+The lower accuracy model got better recoganized objects result.
+
+### Improvement
+Need to spend more time to understand filter and model algorithm and parameters, and tune up to get the best results.
 
 
 
