@@ -307,7 +307,10 @@ Result is:
 ![SVM result](./images/svm_result.png)
 
 ## 4. Test results:
-### Run three test cases 
+### Run three test cases summary
+    100% of objects from pick_list_1.yaml for test1.world, 
+    80% of items from pick_list_2.yaml for test2.world 
+    87.5% of items from pick_list_3.yaml in test3.world.
 #### Test case 1:  
 Run two commands:
 ```
