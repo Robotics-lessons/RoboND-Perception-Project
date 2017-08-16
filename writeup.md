@@ -22,6 +22,7 @@
 7. Create ROS messages containing the details of each object (name, pick_pose, etc.) and write these messages out to `.yaml` files, one for each of the 3 scenarios (`test1-3.world` in `/pr2_robot/worlds/`).  See the example `output.yaml` for details on what the output should look like.  
 8. Submit a link to your GitHub repo for the project or the Python code for your perception pipeline and your output `.yaml` files (3 `.yaml` files, one for each test world).  You must have correctly identified 100% of objects from `pick_list_1.yaml` for `test1.world`, 80% of items from `pick_list_2.yaml` for `test2.world` and 75% of items from `pick_list_3.yaml` in `test3.world`.
 
+![demo-1](https://user-images.githubusercontent.com/20687560/28748231-46b5b912-7467-11e7-8778-3095172b7b19.png)
 ---
 
 ## 2. Code detail:
@@ -292,9 +293,10 @@ Open another new ROS terminal and run this command to capture object features
 ```
 Adjust the number of test data for each object (50) in capture_features.py to get a higher accuracy number.
 
-Run SVM model cdoe 
+Run SVM model code 
+
 Result is:
-----------
+
     Features in Training Set: 400
     Invalid Features in Training set: 4
     SVC
@@ -673,7 +675,6 @@ object_list:
 
 
 
-![demo-1](https://user-images.githubusercontent.com/20687560/28748231-46b5b912-7467-11e7-8778-3095172b7b19.png)
 
 
 
