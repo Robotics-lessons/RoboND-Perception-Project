@@ -63,34 +63,34 @@ def pcl_callback(pcl_msg):
 
     # TODO: Convert ROS msg to PCL data
     cloud = ros_to_pcl(pcl_msg)
+
+    # TODO: Voxel Grid Downsampling
+    vox = cloud.make_voxel_grid_filter()
+    LEAF_SIZE = 0.01
+    vox.set_leaf_size(LEAF_SIZE, LEAF_SIZE, LEAF_SIZE)
+    cloud_filtered = vox.filter()
     
     # TODO: Statistical Outlier Filtering
-    outlier_filter = cloud.make_statistical_outlier_filter()
+    cloud_filtered = cloud_filtered.make_statistical_outlier_filter()
 
     # Set the number of neighboring points to analyze for any given point
-    outlier_filter.set_mean_k(16)
+    cloud_filtered.set_mean_k(16)
 
     # Set threshold scale factor
     x = 0.01   # need to test different values
 
     # Any point with a mean distance larger than global (mean distance+x*std_dev) will be considered outlier
-    outlier_filter.set_std_dev_mul_thresh(x)
+    cloud_filtered.set_std_dev_mul_thresh(x)
 
     # Finally call the filter function for magic
-    cloud_filtered = outlier_filter.filter()
-
-    # TODO: Voxel Grid Downsampling
-    vox = cloud_filtered.make_voxel_grid_filter()
-    LEAF_SIZE = 0.006
-    vox.set_leaf_size(LEAF_SIZE, LEAF_SIZE, LEAF_SIZE)
-    cloud_filtered = vox.filter()
+    cloud_filtered = cloud_filtered.filter()
 
     # TODO: PassThrough Filter
     passthrough = cloud_filtered.make_passthrough_filter()
     filter_axis = 'z'
     passthrough.set_filter_field_name (filter_axis)
     axis_min = 0.6
-    axis_max = 1.1
+    axis_max = 2.0
     passthrough.set_filter_limits (axis_min, axis_max)
     cloud_filtered = passthrough.filter()
 
@@ -123,9 +123,9 @@ def pcl_callback(pcl_msg):
     # as well as minimum and maximum cluster size (in points)
     # NOTE: These are poor choices of clustering parameters
     # Your task is to experiment and find values that work for segmenting objects.
-    ec.set_ClusterTolerance(0.05)
-    ec.set_MinClusterSize(100)
-    ec.set_MaxClusterSize(1600)
+    ec.set_ClusterTolerance(0.03)
+    ec.set_MinClusterSize(20)
+    ec.set_MaxClusterSize(2000)
     # Search the k-d tree for clusters
     ec.set_SearchMethod(tree)
     # Extract indices for each of the discovered clusters
